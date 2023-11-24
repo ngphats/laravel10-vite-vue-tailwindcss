@@ -3,6 +3,14 @@ export
 
 DOCKER_COMPOSE=docker compose -f "docker-compose.yml"
 
+install:
+	@cp ./.env.example ./.env
+	@${DOCKER_COMPOSE} build
+	@${DOCKER_COMPOSE} up -d
+	@${DOCKER_COMPOSE} exec app composer install
+	@${DOCKER_COMPOSE} exec app php artisan key:generate
+	@${DOCKER_COMPOSE} exec app php artisan migrate
+
 build:			## Builds Docker images for the project
 	@${DOCKER_COMPOSE} build
 
@@ -14,8 +22,3 @@ down: 			## Stops all containers
 
 exec:
 	@${DOCKER_COMPOSE} exec app sh
-
-install:
-	@${DOCKER_COMPOSE} exec app composer install
-	@${DOCKER_COMPOSE} exec app php artisan key:generate
-	@${DOCKER_COMPOSE} exec app php artisan migrate
