@@ -14,3 +14,8 @@ down: 			## Stops all containers
 
 exec:
 	@${DOCKER_COMPOSE} exec app sh
+
+install:
+	@${DOCKER_COMPOSE} exec app composer install
+	@${DOCKER_COMPOSE} exec app php artisan key:generate
+	@${DOCKER_COMPOSE} exec app php artisan migrate
